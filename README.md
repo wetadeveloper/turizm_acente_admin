@@ -1,7 +1,3 @@
-Süper 👍 Senin README dosyan da örnekteki gibi detaylı ve profesyonel olabilir. Ben sana bu yapıya göre **Türkçe bir README iskeleti** hazırlayayım. Sen sadece proje adı, ekran görüntüleri linkleri (GitHub’a yüklediğinde `assets/` klasöründen alabilirsin) ve varsa geliştirici bilgilerini güncelleyeceksin.
-
----
-
 # Turizm Dijitalleşme Projesi
 
 ![Flutter](https://img.shields.io/badge/Flutter-02569B?logo=flutter\&logoColor=white)
