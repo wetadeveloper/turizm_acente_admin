@@ -176,4 +176,3 @@ Bu proje MIT lisansı ile dağıtılmaktadır. Daha fazla bilgi için `LICENSE` 
 **Furkan Pala** – Flutter Developer
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?logo=linkedin)](https://www.linkedin.com/in/furkan-pala-9086191b0/)
 [![GitHub](https://img.shields.io/badge/GitHub-000000?logo=github)](https://github.com/wetadeveloper)
-
