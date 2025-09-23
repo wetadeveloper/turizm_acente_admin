@@ -19,7 +19,7 @@ class TurEklemeViewModel extends BaseTurViewModel {
   @override
   void addTurDetayi(String value) {
     if (value.trim().isEmpty) {
-      value = "Yeni tur detayı";
+      value = "";
     }
     final currentList = List<String>.from(tur.turDetaylari);
     currentList.add(value);
@@ -53,7 +53,7 @@ class TurEklemeViewModel extends BaseTurViewModel {
   @override
   void addFiyataDahilHizmet(String value) {
     if (value.trim().isEmpty) {
-      value = "Yeni hizmet";
+      value = "";
     }
     final currentList = List<String>.from(tur.fiyataDahilHizmetler);
     currentList.add(value);
@@ -88,7 +88,7 @@ class TurEklemeViewModel extends BaseTurViewModel {
   @override
   void addImageUrlsListesi(String value) {
     if (value.trim().isEmpty) {
-      value = "https://example.com/image.jpg";
+      value = "";
     }
     final currentList = List<String>.from(tur.imageUrls);
     currentList.add(value);
