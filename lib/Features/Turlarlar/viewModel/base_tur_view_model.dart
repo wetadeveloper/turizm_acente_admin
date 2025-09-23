@@ -23,6 +23,7 @@ abstract class BaseTurViewModel with ChangeNotifier {
     'anadolu_turlari': 'Anadolu Turları',
     'gastronomi_turlari': 'Gastronomi Turları',
   };
+
   List<String> yolculukTuruOptions = [
     'Otobüs',
     'Uçak',
@@ -48,6 +49,7 @@ abstract class BaseTurViewModel with ChangeNotifier {
     '13 Gün 12 Gece',
     '14 Gün 13 Gece',
   ];
+
   List<String> turSehiriOptions = [
     'Konya',
     'Mekke',
@@ -101,9 +103,7 @@ abstract class BaseTurViewModel with ChangeNotifier {
   }
 
   void setTurAdi(String value) {
-    _tur = _tur.copyWith(
-      turAdi: value,
-    );
+    _tur = _tur.copyWith(turAdi: value);
     notifyListeners();
   }
 
@@ -165,48 +165,104 @@ abstract class BaseTurViewModel with ChangeNotifier {
     }
   }
 
+  // Düzeltilmiş tur detayları metodları
   void addTurDetayi(String value) {
-    final currentList = _tur.turDetaylari;
-    final newList = List<String>.from(currentList)..add(value);
-    _tur = _tur.copyWith(turDetaylari: newList);
+    if (value.trim().isEmpty) {
+      value = "Yeni tur detayı";
+    }
+    final currentList = List<String>.from(_tur.turDetaylari);
+    currentList.add(value);
+    _tur = _tur.copyWith(turDetaylari: currentList);
+    debugPrint("Tur detayı eklendi: $value, Toplam: ${currentList.length}");
     notifyListeners();
   }
 
   void removeTurDetayi(int index) {
-    final currentList = _tur.turDetaylari;
-    final newList = List<String>.from(currentList)..removeAt(index);
-    _tur = _tur.copyWith(turDetaylari: newList);
-    notifyListeners();
+    final currentList = List<String>.from(_tur.turDetaylari);
+    if (index >= 0 && index < currentList.length) {
+      currentList.removeAt(index);
+      _tur = _tur.copyWith(turDetaylari: currentList);
+      debugPrint("Tur detayı silindi, kalan: ${currentList.length}");
+      notifyListeners();
+    }
   }
 
+  void updateTurDetayi(int index, String value) {
+    final currentList = List<String>.from(_tur.turDetaylari);
+    if (index >= 0 && index < currentList.length) {
+      currentList[index] = value;
+      _tur = _tur.copyWith(turDetaylari: currentList);
+      debugPrint("Tur detayı güncellendi: $index -> $value");
+      notifyListeners();
+    }
+  }
+
+  // Düzeltilmiş fiyata dahil hizmetler metodları
   void addFiyataDahilHizmet(String value) {
-    final currentList = _tur.fiyataDahilHizmetler;
-    final newList = List<String>.from(currentList)..add(value);
-    _tur = _tur.copyWith(fiyataDahilHizmetler: newList);
+    if (value.trim().isEmpty) {
+      value = "Yeni hizmet";
+    }
+    final currentList = List<String>.from(_tur.fiyataDahilHizmetler);
+    currentList.add(value);
+    _tur = _tur.copyWith(fiyataDahilHizmetler: currentList);
+    debugPrint(
+        "Fiyata dahil hizmet eklendi: $value, Toplam: ${currentList.length}");
     notifyListeners();
   }
 
   void removeFiyataDahilHizmet(int index) {
-    final currentList = _tur.fiyataDahilHizmetler;
-    final newList = List<String>.from(currentList)..removeAt(index);
-    _tur = _tur.copyWith(fiyataDahilHizmetler: newList);
-    notifyListeners();
+    final currentList = List<String>.from(_tur.fiyataDahilHizmetler);
+    if (index >= 0 && index < currentList.length) {
+      currentList.removeAt(index);
+      _tur = _tur.copyWith(fiyataDahilHizmetler: currentList);
+      debugPrint("Fiyata dahil hizmet silindi, kalan: ${currentList.length}");
+      notifyListeners();
+    }
   }
 
+  void updateFiyataDahilHizmet(int index, String value) {
+    final currentList = List<String>.from(_tur.fiyataDahilHizmetler);
+    if (index >= 0 && index < currentList.length) {
+      currentList[index] = value;
+      _tur = _tur.copyWith(fiyataDahilHizmetler: currentList);
+      debugPrint("Fiyata dahil hizmet güncellendi: $index -> $value");
+      notifyListeners();
+    }
+  }
+
+  // Düzeltilmiş image URLs metodları
   void addImageUrlsListesi(String value) {
-    final currentList = _tur.imageUrls;
-    final newList = List<String>.from(currentList)..add(value);
-    _tur = _tur.copyWith(imageUrls: newList);
+    if (value.trim().isEmpty) {
+      value = "https://example.com/image.jpg";
+    }
+    final currentList = List<String>.from(_tur.imageUrls);
+    currentList.add(value);
+    _tur = _tur.copyWith(imageUrls: currentList);
+    debugPrint("Image URL eklendi: $value, Toplam: ${currentList.length}");
     notifyListeners();
   }
 
   void removeImageUrlsListesi(int index) {
-    final currentList = _tur.imageUrls;
-    final newList = List<String>.from(currentList)..removeAt(index);
-    _tur = _tur.copyWith(imageUrls: newList);
-    notifyListeners();
+    final currentList = List<String>.from(_tur.imageUrls);
+    if (index >= 0 && index < currentList.length) {
+      currentList.removeAt(index);
+      _tur = _tur.copyWith(imageUrls: currentList);
+      debugPrint("Image URL silindi, kalan: ${currentList.length}");
+      notifyListeners();
+    }
   }
 
+  void updateImageUrlsListesi(int index, String value) {
+    final currentList = List<String>.from(_tur.imageUrls);
+    if (index >= 0 && index < currentList.length) {
+      currentList[index] = value;
+      _tur = _tur.copyWith(imageUrls: currentList);
+      debugPrint("Image URL güncellendi: $index -> $value");
+      notifyListeners();
+    }
+  }
+
+  // Otel metodları aynı kalıyor
   void addOtelSecenegi(Map<String, dynamic> otel) {
     if (otel.isEmpty ||
         otel['otelAdi'] == null ||
@@ -231,6 +287,7 @@ abstract class BaseTurViewModel with ChangeNotifier {
     final updatedList = List<Map<String, dynamic>>.from(currentList)
       ..removeAt(index);
     tur = tur.copyWith(otelSecenekleri: updatedList);
+    debugPrint("Otel silindi, kalan: ${updatedList.length}");
     notifyListeners();
   }
 
@@ -254,6 +311,7 @@ abstract class BaseTurViewModel with ChangeNotifier {
       'otelYildiz': '',
     });
     tur = tur.copyWith(otelSecenekleri: updatedList);
+    debugPrint("Yeni boş otel eklendi, toplam: ${updatedList.length}");
     notifyListeners();
   }
 

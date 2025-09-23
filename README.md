@@ -150,21 +150,6 @@ lib/
 
 ---
 
-## 🤝 Katkıda Bulunma
-
-Katkılarınızı memnuniyetle karşılıyoruz. Pull Request göndermeden önce lütfen:
-
-1. Depoyu **fork** edin
-2. Yeni bir branch açın
-
-   ```bash
-   git checkout -b feature/ozellik-adi
-   ```
-3. Değişikliklerinizi commit edin
-4. Branch’inizi push edin ve Pull Request açın
-
----
-
 ## 📄 Lisans
 
 Bu proje MIT lisansı ile dağıtılmaktadır. Daha fazla bilgi için `LICENSE` dosyasına göz atın.

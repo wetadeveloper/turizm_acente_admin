@@ -20,7 +20,7 @@ class CommonFormWidgets {
         readOnly: readOnly,
         keyboardType: keyboardType,
         decoration: InputDecoration(
-          labelText: labelText, // 👈 floating label olacak
+          labelText: labelText,
           suffixIcon: suffixIcon,
           border: const OutlineInputBorder(),
         ),
@@ -38,7 +38,7 @@ class CommonFormWidgets {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: DropdownButtonFormField<String>(
-        initialValue: value,
+        value: value,
         onChanged: onChanged,
         items: items,
         validator: validator,
@@ -89,12 +89,18 @@ class CommonFormWidgets {
     required List<String> values,
     required ValueChanged<String> onAdd,
     required ValueChanged<int> onRemove,
-    required ValueChanged<(int, String)> onUpdate,
+    ValueChanged<(int, String)>? onUpdate, // Optional yapıldı
     required String labelText,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        const SizedBox(height: 12),
+        Text(
+          labelText,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 8),
         ...List.generate(values.length, (index) {
           return Padding(
             padding: const EdgeInsets.only(bottom: 8),
@@ -107,9 +113,14 @@ class CommonFormWidgets {
                       labelText: "$labelText ${index + 1}",
                       border: const OutlineInputBorder(),
                     ),
-                    onChanged: (val) => onUpdate((index, val)),
+                    onChanged: (val) {
+                      if (onUpdate != null) {
+                        onUpdate((index, val));
+                      }
+                    },
                   ),
                 ),
+                const SizedBox(width: 8),
                 IconButton(
                   icon: const Icon(Icons.remove_circle, color: Colors.red),
                   onPressed: () => onRemove(index),
@@ -118,12 +129,82 @@ class CommonFormWidgets {
             ),
           );
         }),
+        const SizedBox(height: 8),
         ElevatedButton.icon(
-          onPressed: () => onAdd(""),
+          onPressed: () {
+            // Boş string yerine varsayılan değer ekle
+            onAdd("");
+          },
           icon: const Icon(Icons.add),
           label: Text("$labelText Ekle"),
         ),
+        const SizedBox(height: 12),
       ],
+    );
+  }
+
+  // Yeni bir method - dinamik alanlar için controller'lı versiyon
+  static Widget buildDynamicFieldsWithControllers({
+    required List<String> values,
+    required ValueChanged<String> onAdd,
+    required ValueChanged<int> onRemove,
+    required ValueChanged<(int, String)> onUpdate,
+    required String labelText,
+  }) {
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 12),
+            Text(
+              labelText,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            ...List.generate(values.length, (index) {
+              final controller = TextEditingController(text: values[index]);
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: controller,
+                        decoration: InputDecoration(
+                          labelText: "$labelText ${index + 1}",
+                          border: const OutlineInputBorder(),
+                        ),
+                        onChanged: (val) {
+                          onUpdate((index, val));
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      icon: const Icon(Icons.remove_circle, color: Colors.red),
+                      onPressed: () {
+                        onRemove(index);
+                        setState(() {}); // UI'ı yenile
+                      },
+                    )
+                  ],
+                ),
+              );
+            }),
+            const SizedBox(height: 8),
+            ElevatedButton.icon(
+              onPressed: () {
+                onAdd("");
+                setState(() {}); // UI'ı yenile
+              },
+              icon: const Icon(Icons.add),
+              label: Text("$labelText Ekle"),
+            ),
+            const SizedBox(height: 12),
+          ],
+        );
+      },
     );
   }
 }

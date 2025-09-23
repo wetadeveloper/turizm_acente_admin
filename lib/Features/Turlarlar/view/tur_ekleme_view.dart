@@ -7,11 +7,10 @@ import 'package:ozel_sirket_admin/Features/Turlarlar/widgets/tur_common_form.dar
 import 'package:provider/provider.dart';
 
 class TurEkle extends StatelessWidget {
-  TurEkle({super.key});
-
-  final viewModel = TurEklemeViewModel();
+  const TurEkle({super.key});
 
   Future<void> _ekleButtonHandler(BuildContext context) async {
+    final viewModel = context.read<TurEklemeViewModel>();
     try {
       await viewModel.uploadTur();
       if (context.mounted) {
@@ -36,8 +35,9 @@ class TurEkle extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) {
-        viewModel.setAcentaAdi("Selamet");
-        return viewModel;
+        final vm = TurEklemeViewModel();
+        vm.init(); // init metodunu çağır
+        return vm;
       },
       child: Scaffold(
         appBar: AppBar(
@@ -67,12 +67,17 @@ class TurEkle extends StatelessWidget {
             ),
           ],
         ),
-        body: TurForm(
-            viewModel: viewModel,
-            isUpdate: false,
-            onSubmit: () {
-              _ekleButtonHandler(context);
-            }),
+        body: Consumer<TurEklemeViewModel>(
+          builder: (context, viewModel, child) {
+            return TurForm(
+              viewModel: viewModel,
+              isUpdate: false,
+              onSubmit: () {
+                _ekleButtonHandler(context);
+              },
+            );
+          },
+        ),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ozel_sirket_admin/Core/constants/app_colors.dart';
 import 'package:ozel_sirket_admin/Features/Turlarlar/widgets/otel_secenegi_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:ozel_sirket_admin/Features/Turlarlar/widgets/tur_common_widget.dart';
@@ -18,7 +19,6 @@ class TurForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tur = viewModel.tur;
-
     final selectedImages = viewModel.selectedImages;
 
     final List<String> turDetaylari =
@@ -170,21 +170,28 @@ class TurForm extends StatelessWidget {
               values: turDetaylari,
               onAdd: viewModel.addTurDetayi,
               onRemove: viewModel.removeTurDetayi,
-              onUpdate: (_) {},
+              onUpdate: (tuple) {
+                // tuple = (index, value)
+                viewModel.updateTurDetayi(tuple.$1, tuple.$2);
+              },
             ),
             CommonFormWidgets.buildDynamicFields(
               labelText: "Fiyata Dahil Hizmetler",
               values: fiyataDahilHizmetler,
               onAdd: viewModel.addFiyataDahilHizmet,
               onRemove: viewModel.removeFiyataDahilHizmet,
-              onUpdate: (_) {},
+              onUpdate: (tuple) {
+                viewModel.updateFiyataDahilHizmet(tuple.$1, tuple.$2);
+              },
             ),
             CommonFormWidgets.buildDynamicFields(
               labelText: "Fotoğraf Urlleri (Manuel)",
               values: imageUrls,
               onAdd: viewModel.addImageUrlsListesi,
               onRemove: viewModel.removeImageUrlsListesi,
-              onUpdate: (_) {},
+              onUpdate: (tuple) {
+                viewModel.updateImageUrlsListesi(tuple.$1, tuple.$2);
+              },
             ),
             const SizedBox(height: 16),
             const Text("Otel Seçenekleri",
@@ -204,31 +211,50 @@ class TurForm extends StatelessWidget {
               label: const Text("Yeni Otel Ekle"),
             ),
             const SizedBox(height: 16),
-            if (!isUpdate) ...[
-              const Text("Fotoğraflar",
+            if (isUpdate && imageUrls.isNotEmpty) ...[
+              const Text("Yüklenmiş Fotoğraflar",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              ElevatedButton.icon(
-                onPressed: viewModel.pickImages,
-                icon: const Icon(Icons.add_photo_alternate),
-                label: const Text("Fotoğraf Seç"),
-              ),
-              if (selectedImages.isNotEmpty)
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: 200,
-                    enableInfiniteScroll: false,
-                    enlargeCenterPage: true,
-                  ),
-                  items: selectedImages.map((img) {
-                    return Image.file(img, fit: BoxFit.cover);
-                  }).toList(),
+              CarouselSlider(
+                options: CarouselOptions(
+                  height: 200,
+                  enableInfiniteScroll: false,
+                  enlargeCenterPage: true,
                 ),
+                items: imageUrls.map((url) {
+                  return Stack(
+                    children: [
+                      Image.network(url,
+                          fit: BoxFit.cover, width: double.infinity),
+                      Positioned(
+                        top: 8,
+                        right: 8,
+                        child: IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () => viewModel.deleteFoto(url),
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList(),
+              ),
             ],
             const SizedBox(height: 20),
-            ElevatedButton(
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.button,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+              ),
+              icon: Icon(isUpdate ? Icons.save : Icons.add,
+                  color: AppColors.buttonText),
+              label: Text(
+                isUpdate ? "Turu Güncelle" : "Turumu Ekle",
+                style: const TextStyle(
+                    color: AppColors.buttonText, fontWeight: FontWeight.bold),
+              ),
               onPressed: onSubmit,
-              child: Text(isUpdate ? "Turu Güncelle" : "Turumu Ekle"),
-            ),
+            )
           ],
         ),
       ),
